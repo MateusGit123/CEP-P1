@@ -3,7 +3,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 
-function Busca() {
+function Busca({ aoBuscar }) {
   const [cep, setCep] = useState('');
 
   const buscarCep = async () => {
@@ -21,10 +21,12 @@ function Busca() {
         alert('CEP não encontrado.');
       } else {
         console.log('Dados recebidos da API:', response.data);
+        aoBuscar(response.data); // envia os dados para o App
+        setCep(''); // limpa o campo
       }
     } catch (error) {
-      alert('Erro ao buscar o CEP. Verifique sua conexão ou tente novamente.');
-      console.error('Erro na requisição:', error);
+      alert('Erro ao buscar o CEP.');
+      console.error('Erro:', error);
     }
   };
 
