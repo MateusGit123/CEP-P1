@@ -7,11 +7,11 @@ function LocalidadeLista({ localidades }) {
   return (
     <div className="my-4">
       <h2>Localidades Encontradas</h2>
-      {localidades.map((l, i) => (
-        <Card key={i} title={l.logradouro || 'Sem logradouro'} className="my-2">
-          <p><strong>CEP:</strong> {l.cep}</p>
-          <p><strong>Cidade:</strong> {l.localidade}</p>
-          <p><strong>Estado:</strong> {l.uf}</p>
+      {localidades.map((localidade, i) => (
+        <Card key={i} title={localidade.logradouro || 'Sem logradouro'} className="my-2">
+          <p><strong>CEP:</strong> {localidade.cep}</p>
+          <p><strong>Cidade:</strong> {localidade.localidade}</p>
+          <p><strong>Estado:</strong> {localidade.uf}</p>
         </Card>
       ))}
     </div>

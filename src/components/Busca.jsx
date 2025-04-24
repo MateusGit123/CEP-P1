@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 
-function Busca({ aoBuscar }) {
-  const [cep, setCep] = useState('');
+class Busca extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cep: '',
+    };
+  }
 
-  const buscarCep = async () => {
-    const cepLimpo = cep.replace(/\D/g, '');
+  buscarCep = async () => {
+    const cepLimpo = this.state.cep.replace(/\D/g, '');
 
     if (!cepLimpo) {
       alert('Por favor, digite um CEP.');
@@ -16,13 +21,11 @@ function Busca({ aoBuscar }) {
 
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-
-      if (response.data.erro) {
+      if (response.data.erro || !response.data.cep) {
         alert('CEP não encontrado.');
       } else {
-        console.log('Dados recebidos da API:', response.data);
-        aoBuscar(response.data); // envia os dados para o App
-        setCep(''); // limpa o campo
+        this.props.aoBuscar(response.data); // Envia os dados para o App
+        this.setState({ cep: '' }); // Limpa o campo
       }
     } catch (error) {
       alert('Erro ao buscar o CEP.');
@@ -30,24 +33,26 @@ function Busca({ aoBuscar }) {
     }
   };
 
-  return (
-    <div className="my-4">
-      <span className="p-input-icon-left">
-        <i className="pi pi-map-marker" />
-        <InputText
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
-          placeholder="Digite o CEP"
+  render() {
+    return (
+      <div className="my-4">
+        <span className="p-input-icon-left">
+          <i className="pi pi-map-marker" />
+          <InputText
+            value={this.state.cep}
+            onChange={(e) => this.setState({ cep: e.target.value })}
+            placeholder="Digite o CEP"
+          />
+        </span>
+        <Button
+          label="Buscar"
+          icon="pi pi-search"
+          onClick={this.buscarCep}
+          className="ml-2"
         />
-      </span>
-      <Button
-        label="Buscar"
-        icon="pi pi-search"
-        onClick={buscarCep}
-        className="ml-2"
-      />
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default Busca;

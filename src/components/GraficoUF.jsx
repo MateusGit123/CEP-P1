@@ -1,25 +1,10 @@
 import React from 'react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const cores = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#FFBB28'];
 
-function GraficoUF({ localidades }) {
-  const contagemUF = localidades.reduce((mapa, loc) => {
-    const uf = loc.uf;
-    if (uf) {
-      mapa[uf] = (mapa[uf] || 0) + 1;
-    }
-    return mapa;
-  }, {});
-
-  const dadosGrafico = Object.entries(contagemUF).map(([uf, total]) => ({
+function GraficoUF({ estadosPesquisados }) {
+  const dadosGrafico = Object.entries(estadosPesquisados).map(([uf, total]) => ({
     name: uf,
     value: total,
   }));
@@ -29,7 +14,7 @@ function GraficoUF({ localidades }) {
   return (
     <div style={{ width: '100%', height: 300 }}>
       <h2>Distribuição por Estado (UF)</h2>
-      <ResponsiveContainer>
+      <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={dadosGrafico}
